@@ -163,7 +163,7 @@ print np.dot(I,x)
 a = np.array([[1,2], [3,4]])
 print a.T
 
-
+import numpy as np
 import galton as galton
 galton_data = galton.load()
 
@@ -173,29 +173,22 @@ print "STD = ", np.std(galton_data)
 print "mean heigth fathers = ", np.mean(galton_data[:,0])
 print "mean heigth Sons = ", np.mean(galton_data[:,1])
 
-import matplotplib as plt
+import matplotlib.pyplot as plt
 plt.title("Histogram of all heights")
 plt.hist(np.ravel(galton_data))
 
 
-plt.title("Father vs Son")
-plt.hist(galton_data, bins=25, stacked = True)
+plt.title("Father vs Son")    
+plt.scatter(galton_data[:,1], galton_data[:,0])
 
-plt.plot(galton_data)
-
-plt.axis([60,80,55,80])
-plt.scatter(galton_data[:,0], galton_data[:,1])
-
-
-plt.hist(galton_data, bins=25, stacked = True)
-plt.hist(galton_data, bins=10, normed=True)
 
 pure = galton_data
 noise = np.random.normal(0,1, len(galton_data))
-signal= galton_data
+signal = galton_data
 signal[:,0] = pure[:,0] + noise 
 signal[:,1] = pure[:,1] + noise 
-plt.hist(signal, bins=75, normed=True)
+plt.scatter(signal[:,1], signal[:,0])
+
 
 
 plt.hist(galton_data, bins=25, stacked = True, orientation= "horizontal")       
