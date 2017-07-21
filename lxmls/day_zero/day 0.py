@@ -190,7 +190,73 @@ signal[:,1] = pure[:,1] + noise
 plt.scatter(signal[:,1], signal[:,0])
 
 
+#0.7 onwards:
 
-plt.hist(galton_data, bins=25, stacked = True, orientation= "horizontal")       
-         
+
+#error of ∂∂we (pag. 29)
+
+import numpy as np
+import matplotlib.pyplot as plt
+X = np.linspace(-8, 8, 1000)
+Y = (X+2)**2 - 16*np.exp(-((X-2)**2))
+
+
+# derivative of the function f
+def get_Y_dev(x):
+    return (2*x+4)-16*(-2*x + 4)*np.exp(-((x-2)**2))
+
+
+def gradient_descent(start_x,func,grad):
+    # Precision of the solution
+    prec = 0.0001
+    #Use a fixed small step size
+    step_size = 0.1
+    #max iterations
+    max_iter = 100
+    x_new = start_x
+    res = []
+    for i in xrange(max_iter):
+        x_old = x_new
+        #Use beta egual to -1 for gradient descent
+        x_new = x_old - step_size * grad(x_new)
+        f_x_new = func(x_new)
+        f_x_old = func(x_old)
+        res.append([x_new,f_x_new])
+        if(abs(f_x_new - f_x_old) < prec):
+            print "change in function values too small, leaving"
+            return np.array(res)
+    print "exceeded maximum number of iterations, leaving"
+    return np.array(res)
+
+def grad_desc(start_x, eps, prec):
+    '''
+    runs the gradient descent algorithm and returns the list of estimates
+    
+    example of use grad_desc(start_x=3.9, eps=0.01, prec=0.00001)
+    '''
+    x_new = start_x
+    x_old = start_x + prec * 2
+    res = [x_new]
+    while abs(x_old-x_new) > prec:
+        x_old = x_new
+        x_new = x_old - eps * get_Y_dev(x_new)
+        res.append(x_new)
+    return np.array(res)
+
+
+def get_error(w):
+    sum = 0
+    for i in xrange(0, len(X)):
+        temp = (X[i].T.dot(w) - get_Y_dev[i])
+        sum += temp**2
+    return sum
+
+
+
+
+np.array([0.1,0.01,0.001])
+
+
+
 print "Continue here"
+	
