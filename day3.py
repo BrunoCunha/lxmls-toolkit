@@ -54,3 +54,12 @@ print "CRF - Extended Features Accuracy Train: %.3f Dev: %.3f Test: %.3f"%(eval_
 eval_dev,eval_test)
 
 
+feature_mapper = idfc.IDFeatures(train_seq)
+feature_mapper.build_features()
+
+print "Perceptron Exercise"
+
+sp = spc.StructuredPerceptron(corpus.word_dict, corpus.tag_dict, feature_mapper)
+sp.num_epochs = 20
+sp.train_supervised(train_seq)
+
